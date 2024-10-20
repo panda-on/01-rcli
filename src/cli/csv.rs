@@ -1,18 +1,6 @@
+use crate::validate_input_file;
 use clap::Parser;
-use std::{path::Path, str::FromStr};
-
-#[derive(Debug, Parser)]
-#[clap(name = "rcli", author, version, about, long_about = None)]
-pub struct Opts {
-    #[clap(subcommand)]
-    pub cmd: SubCommand,
-}
-
-#[derive(Debug, Parser)]
-pub enum SubCommand {
-    Csv(CsvOpts),
-    Genpass(GenPassOpts),
-}
+use std::str::FromStr;
 
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
@@ -47,14 +35,6 @@ impl From<OutputFormat> for &'static str {
     }
 }
 
-fn validate_input_file(filename: &str) -> Result<String, &'static str> {
-    if Path::new(filename).exists() {
-        Ok(filename.to_string())
-    } else {
-        Err("Input file does not exist")
-    }
-}
-
 fn parse_format(format: &str) -> Result<OutputFormat, anyhow::Error> {
     format.to_lowercase().parse()
 }
@@ -69,22 +49,4 @@ impl FromStr for OutputFormat {
             _ => Err(anyhow::anyhow!("Invalid format")),
         }
     }
-}
-
-#[derive(Debug, Parser)]
-pub struct GenPassOpts {
-    #[arg(short, long, default_value_t = 16)]
-    pub length: u8,
-
-    #[arg(long, default_value_t = true)]
-    pub upper: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub lower: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub number: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub symbol: bool,
 }

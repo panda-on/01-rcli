@@ -2,3 +2,4 @@
 .vscode
 output.json
 output.yaml
+/fixtures

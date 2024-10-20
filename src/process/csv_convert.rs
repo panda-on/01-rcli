@@ -1,6 +1,6 @@
 use std::fs;
 
-use crate::OutputFormat;
+use crate::cli::OutputFormat;
 use anyhow::Result;
 use csv::Reader;
 
