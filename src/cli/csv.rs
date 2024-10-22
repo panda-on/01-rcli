@@ -1,10 +1,10 @@
-use crate::validate_input_file;
+use crate::verify_path;
 use clap::Parser;
 use std::str::FromStr;
 
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
-    #[arg(short, long, value_parser = validate_input_file)]
+    #[arg(short, long, value_parser = verify_path)]
     pub input: String,
 
     #[arg(short, long, default_value = "output.json")]

@@ -3,7 +3,7 @@ use std::str::FromStr;
 
 use clap::Parser;
 
-use super::validate_input_file;
+use super::verify_file;
 
 // base64 encode --input xxx --output xxx --format
 // base64 decode --input xxx --output xxx --format
@@ -18,7 +18,7 @@ pub enum Base64Subcommand {
 
 #[derive(Parser, Debug)]
 pub struct EncodeOpts {
-    #[arg(short, long, value_parser = validate_input_file, default_value = "-")]
+    #[arg(short, long, value_parser = verify_file, default_value = "-")]
     pub input: String,
     #[arg(short, long, value_parser = parse_b64_format, default_value = "standard")]
     pub format: Base64Format,
@@ -26,7 +26,7 @@ pub struct EncodeOpts {
 
 #[derive(Parser, Debug)]
 pub struct DecodeOpts {
-    #[arg(short, long, value_parser = validate_input_file, default_value = "-")]
+    #[arg(short, long, value_parser = verify_file, default_value = "-")]
     pub input: String,
     #[arg(short, long, value_parser = parse_b64_format, default_value = "standard")]
     pub format: Base64Format,

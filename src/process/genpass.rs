@@ -8,7 +8,7 @@ pub fn generate_password(
     lower: bool,
     number: bool,
     symbol: bool,
-) -> Result<()> {
+) -> Result<String> {
     const UPPER: &[u8] = b"ABCDEFGHJKLMNPQRSTUVWXYZ";
     const LOWER: &[u8] = b"abcdefghijkmnopqrstuvwxyz";
     const NUMBER: &[u8] = b"123456789";
@@ -54,5 +54,5 @@ pub fn generate_password(
     let estimate = zxcvbn(&password, &[]);
     eprintln!("{}", estimate.score());
 
-    Ok(())
+    Ok(password)
 }
