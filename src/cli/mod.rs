@@ -15,6 +15,8 @@ pub use text::*;
 
 use clap::Parser;
 
+use crate::CmdExecutor;
+
 #[derive(Debug, Parser)]
 #[clap(name = "rcli", author, version, about, long_about = None)]
 pub struct Opts {
@@ -34,6 +36,18 @@ pub enum SubCommand {
     Text(TextSubcommand),
     #[clap(subcommand, about = "Serve a directory as specified port")]
     Http(HttpCommand),
+}
+
+impl CmdExecutor for SubCommand {
+    async fn execute(self) -> anyhow::Result<()> {
+        match self {
+            SubCommand::Csv(opts) => opts.execute().await,
+            SubCommand::Genpass(opts) => opts.execute().await,
+            SubCommand::Base64(opts) => opts.execute().await,
+            SubCommand::Text(opts) => opts.execute().await,
+            SubCommand::Http(opts) => opts.execute().await,
+        }
+    }
 }
 
 pub fn verify_path(path: &str) -> Result<PathBuf, &'static str> {

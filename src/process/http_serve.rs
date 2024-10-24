@@ -7,6 +7,7 @@ use axum::{
     routing::get,
     Router,
 };
+use tower_http::services::ServeDir;
 use tracing::{info, warn};
 
 #[derive(Debug)]
@@ -19,9 +20,10 @@ pub async fn process_http_serve(path: PathBuf, port: u16) -> Result<()> {
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
     info!("Serving HTTP at {:?} on {}", path, addr);
 
-    let state = HttpServeState { path };
+    let state = HttpServeState { path: path.clone() };
 
     let router = Router::new()
+        .nest_service("/tower", ServeDir::new(path))
         .route("/*path", get(file_handler))
         .with_state(Arc::new(state));
 

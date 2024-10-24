@@ -1,4 +1,4 @@
-use crate::verify_path;
+use crate::{process_csv, verify_path, CmdExecutor};
 use clap::Parser;
 use std::str::FromStr;
 
@@ -48,5 +48,12 @@ impl FromStr for OutputFormat {
             "yaml" => Ok(OutputFormat::Yaml),
             _ => Err(anyhow::anyhow!("Invalid format")),
         }
+    }
+}
+
+impl CmdExecutor for CsvOpts {
+    async fn execute(self) -> anyhow::Result<()> {
+        process_csv(&self.input, &self.output, self.format)?;
+        Ok(())
     }
 }
